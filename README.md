@@ -1,0 +1,1 @@
+# jQuery decodeMail plugin
