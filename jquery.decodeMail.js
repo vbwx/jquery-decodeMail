@@ -15,12 +15,15 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// jQuery(function($) { $.decodeMail('mail'); });
 // <a href="mail:76627778303140676D61696C2E636F6D?subject=...">My e-mail address is 76627778303140676D61696C2E636F6D!</a>
 
-jQuery(function($) {
-	$('a[href^="mail:"]').each(function() {
-		var $a = $(this), hex = $a.attr('href').replace(/^mail:|[^\w:].*$/g, '');
-		var mail = $('<div/>').html(hex.replace(/[A-Z0-9]{2}/g, '&#x$&;')).text();
-		$a.attr('href', 'mailto:' + mail).html($a.html().replace(RegExp("\\b" + hex + "\\b"), mail));
-	});
-});
+(function($) {
+	$.decodeMail = function(prefix) {
+		return $('a[href^="' + prefix + ':"]').each(function() {
+			var $a = $(this), hex = $a.attr('href').replace(/^\w*:|[^\w:].*$/g, '');
+			var mail = $('<div/>').html(hex.replace(/[A-Z0-9]{2}/g, '&#x$&;')).text();
+			$a.attr('href', 'mailto:' + mail).html($a.html().replace(RegExp("\\b" + hex + "\\b"), mail));
+		});
+	};
+})(jQuery);
